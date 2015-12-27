@@ -1,15 +1,36 @@
-## Put comments here that give an overall description of what your
-## functions do
+## To run the function the values of a squared matrix should be informed
+## as a vector c(...). Also number of rows and columns must be informed.
 
-## Write a short comment describing this function
+## This funcion set the value of a matrix, gets its value,
+## sets and gets its inverse
 
-makeCacheMatrix <- function(x = matrix()) {
-
+makeMatrix <- function(dados,nrow,ncol,...) {
+    x <- matrix(dados,nrow,ncol,...)
+    m <- NULL
+    set <- function(y) {
+        x <<- y
+        m <<- NULL
+    }
+    get <- function() x
+    setinverse <- function(solve) m <<- solve
+    getinverse <- function() m
+    list(set = set, get = get,
+         setinverse = setinverse,
+         getinverse = getinverse)
 }
 
+## This function inverts the matrix created in function above.
+## It checks the cache for the availability of the inverse of the matrix.
+## If the inverse is available it is read from chache, otherwise it is calculated.
 
-## Write a short comment describing this function
-
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+cacheinverse <- function(x, ...) {
+    m <- x$getinverse()
+    if(!is.null(m)) {
+        message("getting cached data")
+        return(m)
+    }
+    data <- x$get()
+    m <- solve(data, ...)
+    x$setinverse(m)
+    m
 }
